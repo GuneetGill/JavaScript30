@@ -59,6 +59,66 @@
   <audio data-key="76" src="sounds/tink.wav"></audio>
 
 <script>
+  window.addEventListener('keydown', (event)=>
+  {
+    //get keycode 
+    const keycode = event.keyCode;
+    //get list of keys we are matchig to 
+    const keyList = getKeyCode();
+
+    //check if we hit right key
+    if (keycode in keyList)
+    {
+      playSound(keycode)
+      //find key with that keycode
+      const key = document.querySelector(`.key[data-key="${keycode}"]`);
+      key.classList.add('playing');
+      removeTransition()
+      
+    }
+  });
+
+  function playSound(keycode)
+  {
+    //find sound element with that keycode
+    const audio = document.querySelector(`audio[data-key="${keycode}"]`);
+    // Rewind to the start
+    audio.currentTime = 0; 
+    audio.play()
+  }
+
+  function getKeyCode() { 
+    // Select all elements with the class 'key'
+    const keyElements = document.querySelectorAll('.key');
+
+    // Create an object to store keycodes and their corresponding elements
+    const keycodeMap = {};
+
+    // Loop through each key element
+    keyElements.forEach(key => {
+        // Get the value of the data-key attribute
+        const keyCode = key.getAttribute('data-key');
+        // Store the key element in the object with the keycode as the key
+        keycodeMap[keyCode] = key;
+    }); 
+
+    // Return the keycodeMap object if needed
+    return keycodeMap;
+}
+
+function removeTransition(event) {
+  // Ensure event is provided and check for the event property
+  if (!event || event.propertyName !== 'transform') {
+    return;
+  }
+  // Remove the 'playing' class from the target element
+  event.target.classList.remove('playing');
+}
+
+
+const keyList = getKeyCode();
+Object.values(keyList).forEach(key => key.addEventListener('transitionend', removeTransition));
+
 
 </script>
 
