@@ -19,13 +19,25 @@
     <input id="base" type="color" name="base" value="#ffc600">
   </div>
 
-  <img src="https://source.unsplash.com/7bwQXzbF6KE/800x500">
+  <img src="https://i.pinimg.com/originals/07/76/fa/0776fad51f56d03ef5f624060f9d18f9.png" >
 
   <style>
+    :root{
+      --border-color: yellow;
+      --spacing: 10px;
+      --blur: 10px;
+    }
 
-    /*
-      misc styles, nothing to do with CSS variables
-    */
+    img{
+      background: var(--border-color);
+      padding: var(--spacing);
+      filter: blur(var(--blur));
+    }
+
+    .hl{
+      color: var(--border-color);
+
+    }
 
     body {
       text-align: center;
@@ -46,6 +58,21 @@
   </style>
 
   <script>
+    const inputs = document.querySelectorAll('.controls input');
+
+    function handleUpdate() {
+      // we added data attritube on html element so we want that
+      // the color one doesnt have sizing so its or nothing 
+      // this captures the px value or nothing for color
+      const suffix = this.dataset.sizing || '';
+      
+      //select element and change it 
+      document.documentElement.style.setProperty(`--${this.name}`, this.value + suffix);
+    }
+
+    //every time i click the slider it will do something
+    inputs.forEach(input => input.addEventListener('change', handleUpdate));
+    inputs.forEach(input => input.addEventListener('mousemove', handleUpdate));
   </script>
 
 </body>
